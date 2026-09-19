@@ -59,6 +59,8 @@ const docQuestions:Question[]=[
 
 function probability(answer:any,key:string){const p=answer?.probabilities||{};if(typeof p[key]==="number")return p[key];const hit=Object.entries(p).find(([k])=>k.toLowerCase().includes(key.toLowerCase()));return typeof hit?.[1]==="number"?hit[1] as number:undefined}
 function pct(v:any){return typeof v==="number"?Math.round(v*100)+"%":"—"}
+function selectedProbability(answer:any){const choice=answer?.choice;return choice?probability(answer,String(choice)):undefined}
+function DocLink({entity,confidence,status}:{entity:any,confidence:any,status:"linked"|"uncertain"}){return <div className={"graphLink "+status}><div className="graphConnector"><i/><span>{status==="linked"?"LINKED":"UNCERTAIN"}</span></div><article className="linkedEntity"><div><small>{entity.kind} · {entity.id}</small><strong>{entity.name}</strong><p>{entity.definition}</p></div><b>{pct(confidence)}</b></article></div>}
 
 export default function SemanticLab(){
  const[mode,setMode]=useState<"code"|"document">("code");
@@ -74,7 +76,10 @@ export default function SemanticLab(){
  }
  const a=result?.result?.answers||{};
  const codePrimary=a.primary_concept?.choice||"Pending";
- const cap=a.capability?.choice||"Pending",proc=a.process?.choice||"Pending";
+ const capChoice=a.capability?.choice,procChoice=a.process?.choice;
+ const capMap:any={customer_information:"CAP-CIM",payments:"CAP-PAY"},procMap:any={onboarding:"PROC-ONBOARD",kyc:"PROC-KYC"};
+ const capEntity=entities.find(x=>x.id===capMap[capChoice]),procEntity=entities.find(x=>x.id===procMap[procChoice]),customerEntity=entities.find(x=>x.id==="INFO-CUSTOMER");
+ const capConfidence=selectedProbability(a.capability),procConfidence=selectedProbability(a.process),customerConfidence=a.customer_link?.noul;
  return <section className="semanticLab">
   <div className="deepIntro"><div className="eyebrow">SEMANTIC ENTERPRISE LINKING · SOPHISTICATED DEMOS</div><h2>Connect implementation and evidence to enterprise meaning</h2><p>Deterministic extraction and retrieval narrow the evidence. Jev makes the bounded semantic judgment. Every proposed relationship keeps its source provenance.</p></div>
   <div className="semanticTabs" role="tablist"><button className={mode==="code"?"active":""} onClick={()=>{setMode("code");setResult(null);setError("")}}><small>01 · ARCHITECTURE</small><b>Code → enterprise model</b></button><button className={mode==="document"?"active":""} onClick={()=>{setMode("document");setResult(null);setError("")}}><small>02 · KNOWLEDGE</small><b>Document → enterprise model</b></button></div>
@@ -87,7 +92,7 @@ export default function SemanticLab(){
    <div className="semanticStory"><span>THE PROBLEM</span><h3>A strategy document never uses your architecture vocabulary.</h3><p>Retrieve a small candidate neighborhood, then determine which existing capabilities, processes and information concepts the passage materially concerns—without inventing new model entities.</p></div>
    <div className="docGrid"><div><span className="stageLabel">1 · SOURCE DOCUMENT</span><div className="documentPaper">{document.split("\n\n").map((p,i)=><p key={i} className={p===passage?"selectedPassage":""}>{p}</p>)}</div></div><div><span className="stageLabel">2 · CANDIDATE ENTERPRISE NEIGHBORHOOD</span><div className="entityStack">{entities.map(x=><article className="entityCard" key={x.id}><small>{x.kind} · {x.id}</small><strong>{x.name}</strong><p>{x.definition}</p></article>)}</div></div></div>
    <div className="semanticJudgment"><div><span>JEV QUESTION</span><h3>Which existing entities does the highlighted evidence materially link to?</h3></div><button className="run" onClick={run} disabled={loading}>{loading?"Linking evidence…":"Run enterprise linking →"}</button></div>
-   {error&&<div className="error">{error}</div>}{result&&<div className="linkOutcome"><div className="linkMap"><div className="sourceNode">STRATEGY-2027<br/><small>#frictionless-1</small></div><div className="edges"><span>→ {cap}</span><span>→ {proc}</span><span>→ Customer · {pct(a.customer_link?.noul)}</span></div></div><p className="provenance">Provenance retained · STRATEGY-2027 → Frictionless business onboarding → chunk #frictionless-1 → proposed entity links · {result.latencyMs} ms</p></div>}
+   {error&&<div className="error">{error}</div>}{result&&<div className="linkOutcome docOutcome"><div className="resultHeader"><div><small>SEMANTIC LINKAGE RESULT</small><h3>3 enterprise relationships evaluated</h3><p>Jev mapped the highlighted strategy evidence to existing OrgWard entities. Choice confidence is shown for the selected capability/process; Customer uses its direct Noul probability.</p></div><div className="resultLegend"><span><i className="dot linked"/>strong link</span><span><i className="dot uncertain"/>review</span></div></div><div className="graphResult"><div className="evidenceNode"><small>SOURCE EVIDENCE</small><strong>Frictionless business onboarding</strong><p>{passage}</p><span>STRATEGY-2027 · chunk #frictionless-1</span></div><div className="graphLinks">{capEntity&&<DocLink entity={capEntity} confidence={capConfidence} status={(capConfidence??0)>=.7?"linked":"uncertain"}/>} {procEntity&&<DocLink entity={procEntity} confidence={procConfidence} status={(procConfidence??0)>=.7?"linked":"uncertain"}/>} {customerEntity&&<DocLink entity={customerEntity} confidence={customerConfidence} status={(customerConfidence??0)>=.7?"linked":"uncertain"}/>}</div></div><div className="resultFoot"><div><small>WHAT THIS MEANS</small><p>The passage is proposed as evidence for these existing enterprise entities. No new capability, process or information concept was generated.</p></div><div><small>PROVENANCE</small><p>Document → section → chunk → JEV judgment → entity ID · {result.latencyMs} ms</p></div></div></div>}
   </div>}
  </section>
 }
