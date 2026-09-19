@@ -1,6 +1,7 @@
 "use client";
 import {useState} from "react";
-import {pipeline} from "@huggingface/transformers";\nimport {Question} from "../lib/types";
+import {pipeline} from "@huggingface/transformers";
+import {Question} from "../lib/types";
 
 const MODEL="onnx-community/gemma-3-270m-it-ONNX";
 const cases=[
@@ -19,7 +20,9 @@ export default function GemmaBenchmark(){
   const out:any[]=[];
   for(let i=0;i<cases.length;i++){const item=cases[i];setProgress("Case "+(i+1)+"/"+cases.length+" · JEV + Gemma ("+backend+")");
    const jt=performance.now();const jp=fetch("/api/evaluate",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({state:item.text,questions:[makeQuestion(item)]})}).then(async r=>{const j=await r.json();if(!r.ok)throw new Error(j.error||"JEV request failed");const a=j.result?.answers?.outcome;const answer=String(a?.choice||"");return{answer,latencyMs:j.latencyMs??Math.round(performance.now()-jt),valid:item.labels.includes(answer),confidence:a?.probabilities?.[answer]}}).catch((e:any)=>({answer:"ERROR",latencyMs:Math.round(performance.now()-jt),valid:false,error:e.message}));
-   const gt=performance.now();const prompt="Allowed labels: "+item.labels.join(", ")+".\\nEvidence: "+item.text+"\\nReturn exactly one allowed label and nothing else.";const gp=generator(prompt,{max_new_tokens:10,do_sample:false,return_full_text:false}).then((g:any)=>{const raw=String(g?.[0]?.generated_text||"");const answer=parseGemma(raw,item.labels);return{answer,latencyMs:Math.round(performance.now()-gt),valid:item.labels.includes(answer)}}).catch((e:any)=>({answer:"ERROR",latencyMs:Math.round(performance.now()-gt),valid:false,error:e.message}));
+   const gt=performance.now();const prompt="Allowed labels: "+item.labels.join(", ")+".\
+Evidence: "+item.text+"\
+Return exactly one allowed label and nothing else.";const gp=generator(prompt,{max_new_tokens:10,do_sample:false,return_full_text:false}).then((g:any)=>{const raw=String(g?.[0]?.generated_text||"");const answer=parseGemma(raw,item.labels);return{answer,latencyMs:Math.round(performance.now()-gt),valid:item.labels.includes(answer)}}).catch((e:any)=>({answer:"ERROR",latencyMs:Math.round(performance.now()-gt),valid:false,error:e.message}));
    const [jev,gemma]=await Promise.all([jp,gp]);out.push({...item,jev,gemma});setRows([...out]);
   }
  }catch(e:any){setError(e?.message||String(e))}finally{setLoading(false);setProgress("")}}
