@@ -1,6 +1,6 @@
 "use client";
 import {useState} from "react";
-import {fundProspectusCase} from "../lib/fund-prospectus";
+import {fundProspectusCase} from "../lib/fund-prospectus";\nimport GemmaBenchmark from "./GemmaBenchmark";
 
 export default function FundProspectusLab(){
  const [result,setResult]=useState<any>(null),[loading,setLoading]=useState(false),[error,setError]=useState("");
@@ -14,5 +14,5 @@ export default function FundProspectusLab(){
  <div className="prospectusExcerpt"><small>SYNTHETIC PROSPECTUS EVIDENCE · representative excerpt</small><p>{fundProspectusCase.excerpt}</p></div>
  <button className="run" onClick={run} disabled={loading}>{loading?"Linking regulatory roles…":"Run Jev role linkage →"}</button>{error&&<div className="error">{error}</div>}
  {result&&<><div className="graphHead"><div><small>REGULATORY ENTITY GRAPH</small><h3>Typed relationships produced from extracted candidates</h3></div><span>{result.latencyMs} ms</span></div><div className="graph">{fundProspectusCase.graphRows.map(g=><div className="edge" key={g.question}><span className="node">{g.from}</span><b>— {g.relation} →</b><span className="node target">{choice(g.question)}</span><small>{conf(g.question)}</small></div>)}</div><div className="assessment"><h3>FI assessment hand-off</h3><p>Persist source spans, extracted literals and Jev probabilities separately. Low-confidence or contradictory role links go to accountable review; accepted links can populate KYC/AML, client classification, custody/depositary conflict, delegation and jurisdiction assessment workflows.</p></div></>}
- <div className="boundary"><b>Why hybrid?</b><p>Exact legal names, registered addresses, identifiers and quoted governing law are extraction problems. “Which extracted legal entity fulfils this regulatory role?” is a bounded semantic classification problem and a better fit for Jev.</p></div></section>
+ <GemmaBenchmark/><div className="boundary"><b>Why hybrid?</b><p>Exact legal names, registered addresses, identifiers and quoted governing law are extraction problems. “Which extracted legal entity fulfils this regulatory role?” is a bounded semantic classification problem and a better fit for Jev.</p></div></section>
 }
