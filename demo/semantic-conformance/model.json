@@ -1,0 +1,31 @@
+{
+  "model": "Retail banking concept slice",
+  "concepts": {
+    "Customer": {
+      "definition": "A Party that has or may establish a customer relationship with the bank.",
+      "owns": [
+        "customerId",
+        "customerStatus"
+      ],
+      "does_not_own": [
+        "ledgerBalance",
+        "accountNumber",
+        "accountFrozenStatus"
+      ],
+      "relationships": [
+        "Customer holds Account"
+      ]
+    },
+    "Account": {
+      "definition": "A financial contract/account maintained by the bank for one or more account holders.",
+      "owns": [
+        "accountNumber",
+        "ledgerBalance",
+        "accountFrozenStatus"
+      ],
+      "relationships": [
+        "Account is held by Customer"
+      ]
+    }
+  }
+}
