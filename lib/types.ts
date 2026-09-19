@@ -1,0 +1,2 @@
+export type Question={id:string;type:"choice"|"noul"|"score";instructions:string;criteria?:Record<string,string>|string[]};
+export type Scenario={id:string;category:string;title:string;tagline:string;problem:string;state:string;questions:Question[];policy:string;action:string;risk:"Low"|"Medium"|"High";actor:string};
