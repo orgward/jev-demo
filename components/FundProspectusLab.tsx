@@ -1,6 +1,7 @@
 "use client";
 import {useState} from "react";
-import {fundProspectusCase} from "../lib/fund-prospectus";\nimport GemmaBenchmark from "./GemmaBenchmark";
+import {fundProspectusCase} from "../lib/fund-prospectus";
+import GemmaBenchmark from "./GemmaBenchmark";
 
 export default function FundProspectusLab(){
  const [result,setResult]=useState<any>(null),[loading,setLoading]=useState(false),[error,setError]=useState("");
