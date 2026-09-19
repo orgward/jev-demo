@@ -1,0 +1,27 @@
+{
+  "customer_conformance": {
+    "type": "noul",
+    "instructions": "Does the code artifact, based only on the supplied structural facts, faithfully represent the enterprise Customer concept rather than merely being named Customer? Treat ownership of Account-specific state/behavior as evidence against conformance."
+  },
+  "primary_concept": {
+    "type": "choice",
+    "instructions": "Which enterprise concept is primarily represented by the artifact's state and behavior?",
+    "criteria": {
+      "customer": "Customer",
+      "account": "Account",
+      "mixed": "Mixed or ambiguous Customer/Account responsibility",
+      "none": "None of the supplied concepts"
+    }
+  },
+  "semantic_alignment": {
+    "type": "score",
+    "instructions": "Score semantic alignment between the artifact and the enterprise Customer definition. Judge meaning and responsibility, not naming.",
+    "criteria": [
+      "Contradicts the Customer concept",
+      "Weak alignment",
+      "Partial/ambiguous alignment",
+      "Strong alignment",
+      "Faithful implementation"
+    ]
+  }
+}
