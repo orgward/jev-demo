@@ -1,0 +1,1 @@
+import{NextResponse}from"next/server";export function GET(){return NextResponse.json({status:"ok",service:"jev-enterprise-decision-lab",jevConfigured:Boolean(process.env.TYPESAFE_API_KEY),time:new Date().toISOString()})}
