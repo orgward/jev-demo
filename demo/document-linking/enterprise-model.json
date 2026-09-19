@@ -1,0 +1,68 @@
+{
+  "entities": [
+    {
+      "id": "CAP-CIM",
+      "kind": "capability",
+      "name": "Customer Information Management",
+      "definition": "Ability to establish, govern, maintain and provide authoritative customer information across the enterprise."
+    },
+    {
+      "id": "CAP-PAY",
+      "kind": "capability",
+      "name": "Payment Processing",
+      "definition": "Ability to initiate, authorize, execute and monitor payments."
+    },
+    {
+      "id": "CAP-WORK",
+      "kind": "capability",
+      "name": "Workplace Management",
+      "definition": "Ability to provide and operate employee workplace facilities."
+    },
+    {
+      "id": "PROC-ONBOARD",
+      "kind": "process",
+      "name": "Customer Onboarding",
+      "definition": "End-to-end process to establish a new customer relationship, including collection/reuse of customer information and required controls."
+    },
+    {
+      "id": "PROC-KYC",
+      "kind": "process",
+      "name": "KYC Review",
+      "definition": "Process to perform required customer due-diligence checks and approval."
+    },
+    {
+      "id": "INFO-CUSTOMER",
+      "kind": "information_concept",
+      "name": "Customer",
+      "definition": "Canonical representation of a party in a customer relationship with the bank."
+    },
+    {
+      "id": "SYS-CRM",
+      "kind": "system",
+      "name": "CRM",
+      "definition": "Relationship-management system used by relationship managers."
+    }
+  ],
+  "relationships": [
+    {
+      "from": "PROC-ONBOARD",
+      "type": "uses",
+      "to": "INFO-CUSTOMER"
+    },
+    {
+      "from": "CAP-CIM",
+      "type": "manages",
+      "to": "INFO-CUSTOMER"
+    },
+    {
+      "from": "PROC-ONBOARD",
+      "type": "includes",
+      "to": "PROC-KYC"
+    },
+    {
+      "from": "SYS-CRM",
+      "type": "consumes",
+      "to": "INFO-CUSTOMER"
+    }
+  ]
+}

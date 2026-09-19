@@ -1,0 +1,38 @@
+{
+  "capability": {
+    "type": "choice",
+    "instructions": "Which candidate capability is most materially addressed by this passage? Choose based on the canonical definitions, not lexical overlap.",
+    "criteria": {
+      "customer_information": "Customer Information Management (CAP-CIM)",
+      "payments": "Payment Processing (CAP-PAY)",
+      "none": "Neither candidate capability is materially addressed"
+    }
+  },
+  "process": {
+    "type": "choice",
+    "instructions": "Which candidate process is most materially addressed by this passage?",
+    "criteria": {
+      "onboarding": "Customer Onboarding (PROC-ONBOARD)",
+      "kyc": "KYC Review (PROC-KYC)",
+      "none": "Neither candidate process is materially addressed"
+    }
+  },
+  "customer_link": {
+    "type": "noul",
+    "instructions": "The passage materially concerns the canonical Customer information concept (INFO-CUSTOMER), rather than merely mentioning customers incidentally."
+  },
+  "link_strength": {
+    "type": "score",
+    "instructions": "How strong is the semantic evidence for linking this passage to Customer Information Management (CAP-CIM)?",
+    "criteria": [
+      "No material relationship",
+      "Weak/indirect",
+      "Material",
+      "Direct and strong"
+    ]
+  },
+  "sufficient": {
+    "type": "noul",
+    "instructions": "The supplied passage contains enough evidence to propose at least one enterprise-model linkage without needing surrounding document text."
+  }
+}

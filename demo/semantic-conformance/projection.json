@@ -1,0 +1,40 @@
+{
+  "artifact": "com.orgward.demo.Customer",
+  "kind": "entity",
+  "language": "java",
+  "structural_facts": {
+    "fields": [
+      {
+        "name": "customerId",
+        "type": "String"
+      },
+      {
+        "name": "accountNumber",
+        "type": "String"
+      },
+      {
+        "name": "ledgerBalance",
+        "type": "BigDecimal"
+      },
+      {
+        "name": "frozen",
+        "type": "boolean"
+      }
+    ],
+    "operations": [
+      {
+        "name": "credit",
+        "effect": "mutates ledgerBalance"
+      },
+      {
+        "name": "freeze",
+        "effect": "sets frozen=true"
+      }
+    ]
+  },
+  "candidate_concepts": [
+    "Customer",
+    "Account"
+  ],
+  "provenance": "demo/semantic-conformance/src/main/java/com/orgward/demo/Customer.java"
+}

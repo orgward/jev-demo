@@ -1,0 +1,16 @@
+{
+  "source": {
+    "document_id": "STRATEGY-2027",
+    "section": "Frictionless business onboarding",
+    "chunk_id": "STRATEGY-2027#frictionless-1",
+    "text": "Business customers repeatedly provide registered address, organization details and ownership information during onboarding even where verified information already exists elsewhere in the bank. The 2027 programme will pre-fill verified company information, reuse approved customer records across onboarding steps, and reduce manual re-keying by relationship managers."
+  },
+  "candidate_entity_ids": [
+    "CAP-CIM",
+    "CAP-PAY",
+    "PROC-ONBOARD",
+    "PROC-KYC",
+    "INFO-CUSTOMER"
+  ],
+  "expected_demo_signal": "Strong links should emerge to Customer Information Management, Customer Onboarding and Customer; Payment Processing is a distractor. KYC is contextually nearby but not the main subject of this chunk."
+}
